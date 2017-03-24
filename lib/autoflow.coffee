@@ -98,7 +98,12 @@ module.exports =
         if width_i_to_j > width
           break
 
-        cost = minima[i] + (width - width_i_to_j) ** 2
+        current_line_penalty = (width - width_i_to_j) ** 2
+        if j is count
+          # We're on the last line, we don't care how short this one is
+          current_line_penalty = 0
+
+        cost = minima[i] + current_line_penalty
         if cost < minima[j]
           minima[j] = cost
           breaks[j] = i
