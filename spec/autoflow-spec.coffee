@@ -170,6 +170,18 @@ describe "Autoflow package", ->
       '''
       expect(autoflow.reflow(text, wrapColumn: 80)).toEqual res
 
+    # See: https://en.wikipedia.org/wiki/Line_wrap_and_word_wrap#Minimum_raggedness
+    it 'optimizes for raggedness', ->
+      text = "This text has some long and short words mixedButShould still look sensible."
+
+      res = '''
+        This text has some
+        long and short words
+        mixedButShould still look
+        sensible.
+      '''
+      expect(autoflow.reflow(text, wrapColumn: 26)).toEqual res
+
     it 'respects indentation', ->
       text = '''
         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus gravida nibh id magna ullamcorper sagittis. Maecenas
