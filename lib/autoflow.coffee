@@ -92,13 +92,13 @@ module.exports =
     for i in [0..(count - 1)]
       j = i + 1
       while j <= count
-        chars_j_to_i = offsets[j] - offsets[i]
-        spaces_j_to_i = j - i - 1
-        width_j_to_i = chars_j_to_i + spaces_j_to_i
-        if width_j_to_i > width
+        chars_i_to_j = offsets[j] - offsets[i]
+        spaces_i_to_j = j - i - 1
+        width_i_to_j = chars_i_to_j + spaces_i_to_j
+        if width_i_to_j > width
           break
 
-        cost = minima[i] + (width - width_j_to_i) ** 2
+        cost = minima[i] + (width - width_i_to_j) ** 2
         if cost < minima[j]
           minima[j] = cost
           breaks[j] = i
