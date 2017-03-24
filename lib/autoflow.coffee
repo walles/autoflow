@@ -96,6 +96,16 @@ module.exports =
         spaces_i_to_j = j - i - 1
         width_i_to_j = chars_i_to_j + spaces_i_to_j
         if width_i_to_j > width
+          if j is (i + 1)
+            # This is a single word that is longer than the allowed line length,
+            # just take as it is and pretend it was perfect.
+            #
+            # "Perfect" in this case means that no extra penalty is incurred by
+            # breaking here.
+            minima[j] = minima[i]
+            breaks[j] = i
+            j += 1
+
           break
 
         current_line_penalty = (width - width_i_to_j) ** 2
