@@ -41,7 +41,7 @@ describe "Autoflow package", ->
       atom.commands.dispatch editorElement, 'autoflow:reflow-selection'
 
       exedOut = editor.getText().replace(/\t/g, Array(tabLength+1).join 'X')
-      expect(exedOut).toBe "XXXXXXXXThis is the first\nXXXXXXXXparagraph and it is\nXXXXXXXXlonger than the\nXXXXXXXXpreferred line length\nXXXXXXXXso it should be\nXXXXXXXXreflowed.\n\nXXXXXXXXThis is a short\nXXXXXXXXparagraph.\n\nXXXXXXXXAnother long\nXXXXXXXXparagraph, it should\nXXXXXXXXalso be reflowed with\nXXXXXXXXthe use of this single\nXXXXXXXXcommand."
+      expect(exedOut).toBe "XXXXXXXXThis is the first\nXXXXXXXXparagraph and it\nXXXXXXXXis longer than the\nXXXXXXXXpreferred line length\nXXXXXXXXso it should be\nXXXXXXXXreflowed.\n\nXXXXXXXXThis is a short\nXXXXXXXXparagraph.\n\nXXXXXXXXAnother long\nXXXXXXXXparagraph, it should\nXXXXXXXXalso be reflowed with\nXXXXXXXXthe use of this single\nXXXXXXXXcommand."
 
     it "rearranges line breaks in the current selection to ensure lines are shorter than config.editor.preferredLineLength", ->
       editor.setText """
@@ -63,9 +63,9 @@ describe "Autoflow package", ->
 
         This is a short paragraph.
 
-        Another long paragraph, it
-        should also be reflowed with
-        the use of this single
+        Another long paragraph,
+        it should also be reflowed
+        with the use of this single
         command.
       """
 
@@ -121,8 +121,8 @@ describe "Autoflow package", ->
 
         The quick brown fox jumps over
         the lazy dog. The preceding
-        sentence contains every letter
-        in the entire English
+        sentence contains every
+        letter in the entire English
         alphabet, which has absolutely
         no relevance to this test.
 
@@ -192,7 +192,7 @@ describe "Autoflow package", ->
             Phasellus gravida
             nibh id magna ullamcorper
             tincidunt adipiscing lacinia a dui. Etiam quis erat dolor.
-            rutrum nisl fermentum  rhoncus. Duis blandit ligula facilisis fermentum
+            rutrum nisl fermentum rhoncus. Duis blandit ligula facilisis fermentum
       '''
 
       res = '''
@@ -202,7 +202,7 @@ describe "Autoflow package", ->
 
             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus gravida
             nibh id magna ullamcorper tincidunt adipiscing lacinia a dui. Etiam quis
-            erat dolor. rutrum nisl fermentum  rhoncus. Duis blandit ligula facilisis
+            erat dolor. rutrum nisl fermentum rhoncus. Duis blandit ligula facilisis
             fermentum
       '''
       expect(autoflow.reflow(text, wrapColumn: 80)).toEqual res
@@ -217,7 +217,7 @@ describe "Autoflow package", ->
           #  Phasellus gravida
           #  nibh id magna ullamcorper
           #  tincidunt adipiscing lacinia a dui. Etiam quis erat dolor.
-          #  rutrum nisl fermentum  rhoncus. Duis blandit ligula facilisis fermentum
+          #  rutrum nisl fermentum rhoncus. Duis blandit ligula facilisis fermentum
       '''
 
       res = '''
@@ -227,7 +227,7 @@ describe "Autoflow package", ->
 
           #  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus gravida
           #  nibh id magna ullamcorper tincidunt adipiscing lacinia a dui. Etiam quis
-          #  erat dolor. rutrum nisl fermentum  rhoncus. Duis blandit ligula facilisis
+          #  erat dolor. rutrum nisl fermentum rhoncus. Duis blandit ligula facilisis
           #  fermentum
       '''
       expect(autoflow.reflow(text, wrapColumn: 80)).toEqual res
@@ -305,8 +305,8 @@ describe "Autoflow package", ->
       '''
 
       res = '''
-        В начале июля, в чрезвычайно жаркое время, под вечер, один молодой человек вышел
-        из своей каморки, которую нанимал от жильцов в С-м переулке, на улицу и
+        В начале июля, в чрезвычайно жаркое время, под вечер, один молодой человек
+        вышел из своей каморки, которую нанимал от жильцов в С-м переулке, на улицу и
         медленно, как бы в нерешимости, отправился к К-ну мосту.
       '''
 
