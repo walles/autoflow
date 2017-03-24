@@ -72,22 +72,47 @@ module.exports =
 
     leadingVerticalSpace + paragraphs.join('\n\n') + trailingVerticalSpace
 
-  doReflow: (text, wrapColumn) ->
+  # Minimum raggedness algorithm ported from http://xxyxyz.org/line-breaking.
+  #
+  # This is the "Shortest path" one.
+  doReflow: (text, width) ->
+    VERY_MUCH = 10**6
+
+    words = text.split /[\s]+/
+    count = words.length
+    if count.length is 0
+      return []
+
+    offsets = [0]
+    for segment in words
+      offsets.push(offsets[offsets.length - 1] + segment.length)
+
+    minima = [0].concat(VERY_MUCH for [1..count])
+    breaks = (0 for [0..count])
+    for i in [0..(count - 1)]
+      j = i + 1
+      while j <= count
+        chars_j_to_i = offsets[j] - offsets[i]
+        spaces_j_to_i = j - i - 1
+        width_j_to_i = chars_j_to_i + spaces_j_to_i
+        if width_j_to_i > width
+          break
+
+        cost = minima[i] + (width - width_j_to_i) ** 2
+        if cost < minima[j]
+          minima[j] = cost
+          breaks[j] = i
+        j += 1
+
     lines = []
-    currentLine = []
-    currentLineLength = 0
+    j = count
+    while j > 0
+      i = breaks[j]
+      if (j > i)
+        lines.push(words[i..(j - 1)].join(' '))
+      j = i
 
-    for segment in @segmentText(text)
-      # A segment is basically a word or whitespace
-      console.info("<" + segment + ">")
-      if @wrapSegment(segment, currentLineLength, wrapColumn)
-        lines.push(currentLine.join(''))
-        currentLine = []
-        currentLineLength = 0
-      currentLine.push(segment)
-      currentLineLength += segment.length
-    lines.push(currentLine.join(''))
-
+    lines.reverse()
     return lines
 
   getTabLength: (editor) ->
