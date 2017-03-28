@@ -72,10 +72,33 @@ module.exports =
 
     leadingVerticalSpace + paragraphs.join('\n\n') + trailingVerticalSpace
 
+  doReflow: (text, wrapColumn) ->
+    # FIXME: Choose implementation based on Atom config setting
+    return @greedyReflow(text, wrapColumn)
+
+  # Greedy reflow; just put as many words as possible on each line
+  greedyReflow: (text, wrapColumn) ->
+    lines = []
+    currentLine = []
+    currentLineLength = 0
+
+    for segment in @segmentText(text)
+      # A segment is basically a word or whitespace
+      console.info("<" + segment + ">")
+      if @wrapSegment(segment, currentLineLength, wrapColumn)
+        lines.push(currentLine.join(''))
+        currentLine = []
+        currentLineLength = 0
+      currentLine.push(segment)
+      currentLineLength += segment.length
+    lines.push(currentLine.join(''))
+
+    return lines
+
   # Minimum raggedness algorithm ported from http://xxyxyz.org/line-breaking.
   #
   # This is the "Shortest path" one.
-  doReflow: (text, width) ->
+  minimumRaggednessReflow: (text, width) ->
     VERY_MUCH = 10**6
 
     words = text.split /[\s]+/
