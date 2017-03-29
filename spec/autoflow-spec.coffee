@@ -130,19 +130,7 @@ describe "Autoflow package", ->
 
       """
 
-    it "allows for single words that exceed the preferred wrap column length", ->
-      editor.setText("this-is-a-super-long-word-that-shouldn't-break-autoflow and these are some smaller words")
-
-      editor.selectAll()
-      atom.commands.dispatch editorElement, 'autoflow:reflow-selection'
-
-      expect(editor.getText()).toBe """
-        this-is-a-super-long-word-that-shouldn't-break-autoflow
-        and these are some smaller
-        words
-      """
-
-  describe "reflowing text", ->
+  describe "respecting existing formatting while reflowing text", ->
     beforeEach ->
       autoflow = require("../lib/autoflow")
 
@@ -169,18 +157,6 @@ describe "Autoflow package", ->
         rutrum nisl fermentum rhoncus. Duis blandit ligula facilisis fermentum.
       '''
       expect(autoflow.reflow(text, wrapColumn: 80)).toEqual res
-
-    # See: https://en.wikipedia.org/wiki/Line_wrap_and_word_wrap#Minimum_raggedness
-    it 'optimizes for raggedness', ->
-      text = "This text has some long and short words mixedButShould still look sensible."
-
-      res = '''
-        This text has some
-        long and short words
-        mixedButShould still look
-        sensible.
-      '''
-      expect(autoflow.reflow(text, wrapColumn: 26)).toEqual res
 
     it 'respects indentation', ->
       text = '''
@@ -287,6 +263,20 @@ describe "Autoflow package", ->
       '''
       expect(autoflow.reflow(text, wrapColumn: 80)).toEqual res
 
+  describe "greedy reflow", ->
+    beforeEach ->
+      autoflow = require("../lib/autoflow")
+
+    it "allows for single words that exceed the preferred wrap column length", ->
+      text = "this-is-a-super-long-word-that-shouldn't-break-autoflow and these are some smaller words"
+
+      res = """
+        this-is-a-super-long-word-that-shouldn't-break-autoflow
+        and these are some smaller
+        words
+      """
+      expect(autoflow.greedyReflow(text, wrapColumn: 30)).toEqual res
+
     it 'properly handles CRLF', ->
       text = "This is the first line and it is longer than the preferred line length so it should be reflowed.\r\nThis is a short line which should\r\nbe reflowed with the following line.\rAnother long line, it should also be reflowed with everything above it when it is all reflowed."
 
@@ -297,7 +287,7 @@ describe "Autoflow package", ->
         following line. Another long line, it should also be reflowed with everything
         above it when it is all reflowed.
         '''
-      expect(autoflow.reflow(text, wrapColumn: 80)).toEqual res
+      expect(autoflow.greedyReflow(text, wrapColumn: 80)).toEqual res
 
     it 'handles cyrillic text', ->
       text = '''
@@ -310,7 +300,7 @@ describe "Autoflow package", ->
         медленно, как бы в нерешимости, отправился к К-ну мосту.
       '''
 
-      expect(autoflow.reflow(text, wrapColumn: 80)).toEqual res
+      expect(autoflow.greedyReflow(text, wrapColumn: 80)).toEqual res
 
     it 'handles `yo` character properly', ->
       # Because there're known problems with this character in major regex engines
@@ -322,4 +312,67 @@ describe "Autoflow package", ->
         Ё
       '''
 
-      expect(autoflow.reflow(text, wrapColumn: 2)).toEqual res
+      expect(autoflow.greedyReflow(text, wrapColumn: 2)).toEqual res
+
+  describe "minimum raggedness reflow", ->
+    beforeEach ->
+      autoflow = require("../lib/autoflow")
+
+    it "allows for single words that exceed the preferred wrap column length", ->
+      text = "this-is-a-super-long-word-that-shouldn't-break-autoflow and these are some smaller words"
+
+      res = """
+        this-is-a-super-long-word-that-shouldn't-break-autoflow
+        and these are some smaller
+        words
+      """
+      expect(autoflow.minimumRaggednessReflow(text, wrapColumn: 30)).toEqual res
+
+    # See: https://en.wikipedia.org/wiki/Line_wrap_and_word_wrap#Minimum_raggedness
+    it 'optimizes for raggedness', ->
+      text = "This text has some long and short words mixedButShould still look sensible."
+
+      res = '''
+        This text has some
+        long and short words
+        mixedButShould still look
+        sensible.
+      '''
+      expect(autoflow.minimumRaggednessReflow(text, wrapColumn: 26)).toEqual res
+
+    it 'properly handles CRLF', ->
+      text = "This is the first line and it is longer than the preferred line length so it should be reflowed.\r\nThis is a short line which should\r\nbe reflowed with the following line.\rAnother long line, it should also be reflowed with everything above it when it is all reflowed."
+
+      res =
+        '''
+        This is the first line and it is longer than the preferred line length so it
+        should be reflowed. This is a short line which should be reflowed with the
+        following line. Another long line, it should also be reflowed with everything
+        above it when it is all reflowed.
+        '''
+      expect(autoflow.minimumRaggednessReflow(text, wrapColumn: 80)).toEqual res
+
+    it 'handles cyrillic text', ->
+      text = '''
+        В начале июля, в чрезвычайно жаркое время, под вечер, один молодой человек вышел из своей каморки, которую нанимал от жильцов в С-м переулке, на улицу и медленно, как бы в нерешимости, отправился к К-ну мосту.
+      '''
+
+      res = '''
+        В начале июля, в чрезвычайно жаркое время, под вечер, один молодой человек
+        вышел из своей каморки, которую нанимал от жильцов в С-м переулке, на улицу и
+        медленно, как бы в нерешимости, отправился к К-ну мосту.
+      '''
+
+      expect(autoflow.minimumRaggednessReflow(text, wrapColumn: 80)).toEqual res
+
+    it 'handles `yo` character properly', ->
+      # Because there're known problems with this character in major regex engines
+      text = 'Ё Ё Ё'
+
+      res = '''
+        Ё
+        Ё
+        Ё
+      '''
+
+      expect(autoflow.minimumRaggednessReflow(text, wrapColumn: 2)).toEqual res

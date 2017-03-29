@@ -98,7 +98,7 @@ module.exports =
   # Minimum raggedness algorithm ported from http://xxyxyz.org/line-breaking.
   #
   # This is the "Shortest path" one.
-  minimumRaggednessReflow: (text, width) ->
+  minimumRaggednessReflow: (text, wrapColumn) ->
     VERY_MUCH = 10**6
 
     words = text.split /[\s]+/
@@ -114,11 +114,14 @@ module.exports =
     breaks = (0 for [0..count])
     for i in [0..(count - 1)]
       j = i + 1
+      # "i" is the index of the first word of the current line
+      # "j" is the index of the last word of the current line
+
       while j <= count
         chars_i_to_j = offsets[j] - offsets[i]
         spaces_i_to_j = j - i - 1
         width_i_to_j = chars_i_to_j + spaces_i_to_j
-        if width_i_to_j > width
+        if width_i_to_j > wrapColumn
           if j is (i + 1)
             # This is a single word that is longer than the allowed line length,
             # just take as it is and pretend it was perfect.
@@ -131,9 +134,12 @@ module.exports =
 
           break
 
-        current_line_penalty = (width - width_i_to_j) ** 2
+        current_line_penalty = (wrapColumn - width_i_to_j) ** 2
         if j is count
-          # We're on the last line, we don't care how short this one is
+          # We're on the last line, we don't care how short this one is.
+          #
+          # The reason this is the last line is that the last word of the
+          # current line (j) is the last word of the text (count).
           current_line_penalty = 0
 
         cost = minima[i] + current_line_penalty
