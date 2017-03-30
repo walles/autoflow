@@ -275,7 +275,7 @@ describe "Autoflow package", ->
         and these are some smaller
         words
       """
-      expect(autoflow.greedyReflow(text, wrapColumn: 30)).toEqual res
+      expect(autoflow.reflow(text, wrapColumn: 30, algorithm: "greedy")).toEqual res
 
     it 'properly handles CRLF', ->
       text = "This is the first line and it is longer than the preferred line length so it should be reflowed.\r\nThis is a short line which should\r\nbe reflowed with the following line.\rAnother long line, it should also be reflowed with everything above it when it is all reflowed."
@@ -287,7 +287,7 @@ describe "Autoflow package", ->
         following line. Another long line, it should also be reflowed with everything
         above it when it is all reflowed.
         '''
-      expect(autoflow.greedyReflow(text, wrapColumn: 80)).toEqual res
+      expect(autoflow.reflow(text, wrapColumn: 80, algorithm: "greedy")).toEqual res
 
     it 'handles cyrillic text', ->
       text = '''
@@ -300,7 +300,7 @@ describe "Autoflow package", ->
         медленно, как бы в нерешимости, отправился к К-ну мосту.
       '''
 
-      expect(autoflow.greedyReflow(text, wrapColumn: 80)).toEqual res
+      expect(autoflow.reflow(text, wrapColumn: 80, algorithm: "greedy")).toEqual res
 
     it 'handles `yo` character properly', ->
       # Because there're known problems with this character in major regex engines
@@ -312,7 +312,7 @@ describe "Autoflow package", ->
         Ё
       '''
 
-      expect(autoflow.greedyReflow(text, wrapColumn: 2)).toEqual res
+      expect(autoflow.reflow(text, wrapColumn: 2, algorithm: "greedy")).toEqual res
 
   describe "minimum raggedness reflow", ->
     beforeEach ->
@@ -326,7 +326,7 @@ describe "Autoflow package", ->
         and these are some smaller
         words
       """
-      expect(autoflow.minimumRaggednessReflow(text, wrapColumn: 30)).toEqual res
+      expect(autoflow.reflow(text, wrapColumn: 30, algorithm: "minimumRaggedness")).toEqual res
 
     # See: https://en.wikipedia.org/wiki/Line_wrap_and_word_wrap#Minimum_raggedness
     it 'optimizes for raggedness', ->
@@ -338,7 +338,7 @@ describe "Autoflow package", ->
         mixedButShould still look
         sensible.
       '''
-      expect(autoflow.minimumRaggednessReflow(text, wrapColumn: 26)).toEqual res
+      expect(autoflow.reflow(text, wrapColumn: 26, algorithm: "minimumRaggedness")).toEqual res
 
     it 'properly handles CRLF', ->
       text = "This is the first line and it is longer than the preferred line length so it should be reflowed.\r\nThis is a short line which should\r\nbe reflowed with the following line.\rAnother long line, it should also be reflowed with everything above it when it is all reflowed."
@@ -350,7 +350,7 @@ describe "Autoflow package", ->
         following line. Another long line, it should also be reflowed with everything
         above it when it is all reflowed.
         '''
-      expect(autoflow.minimumRaggednessReflow(text, wrapColumn: 80)).toEqual res
+      expect(autoflow.reflow(text, wrapColumn: 80, algorithm: "minimumRaggedness")).toEqual res
 
     it 'handles cyrillic text', ->
       text = '''
@@ -363,7 +363,7 @@ describe "Autoflow package", ->
         медленно, как бы в нерешимости, отправился к К-ну мосту.
       '''
 
-      expect(autoflow.minimumRaggednessReflow(text, wrapColumn: 80)).toEqual res
+      expect(autoflow.reflow(text, wrapColumn: 80, algorithm: "minimumRaggedness")).toEqual res
 
     it 'handles `yo` character properly', ->
       # Because there're known problems with this character in major regex engines
@@ -375,4 +375,4 @@ describe "Autoflow package", ->
         Ё
       '''
 
-      expect(autoflow.minimumRaggednessReflow(text, wrapColumn: 2)).toEqual res
+      expect(autoflow.reflow(text, wrapColumn: 2, algorithm: "minimumRaggedness")).toEqual res
