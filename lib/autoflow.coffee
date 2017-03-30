@@ -8,6 +8,23 @@ CharacterPattern = ///
 ///
 
 module.exports =
+  config:
+    algorithm:
+      title: 'Reflow Algorithm'
+      description: '''
+      This determines how text is reflowed. The two options are to either just
+      [put as many words as possible on each
+      line](https://en.wikipedia.org/wiki/Line_wrap_and_word_wrap#Minimum_number_of_lines),
+      or to [try to avoid getting very short lines after
+      reflowing](https://en.wikipedia.org/wiki/Line_wrap_and_word_wrap#Minimum_raggedness).
+      '''
+      type: 'string'
+      default: 'greedy'
+      enum: [
+        {value: 'greedy', description: 'Put as many words as possible on each line'}
+        {value: 'minimumRaggedness', description: 'Avoid short lines after reflow'}
+      ]
+
   activate: ->
     atom.commands.add 'atom-text-editor',
       'autoflow:reflow-selection': (event) =>
@@ -168,8 +185,7 @@ module.exports =
     atom.config.get('editor.preferredLineLength', scope: editor.getRootScopeDescriptor())
 
   getAlgorithm: (editor) ->
-    # FIXME: Get an algorithm config setting
-    return "greedy"
+    atom.config.get('autoflow.algorithm')
 
   wrapSegment: (segment, currentLineLength, wrapColumn) ->
     CharacterPattern.test(segment) and
