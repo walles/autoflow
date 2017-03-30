@@ -87,7 +87,6 @@ module.exports =
 
     for segment in @segmentText(text)
       # A segment is basically a word or whitespace
-      console.info("<" + segment + ">")
       if @wrapSegment(segment, currentLineLength, wrapColumn)
         lines.push(currentLine.join(''))
         currentLine = []
