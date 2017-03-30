@@ -21,10 +21,11 @@ module.exports =
     reflowOptions =
         wrapColumn: @getPreferredLineLength(editor)
         tabLength: @getTabLength(editor)
+        algorithm: @getAlgorithm(editor)
     reflowedText = @reflow(editor.getTextInRange(range), reflowOptions)
     editor.getBuffer().setTextInRange(range, reflowedText)
 
-  reflow: (text, {wrapColumn, tabLength}) ->
+  reflow: (text, {wrapColumn, tabLength, algorithm}) ->
     paragraphs = []
     # Convert all \r\n and \r to \n. The text buffer will normalize them later
     text = text.replace(/\r\n?/g, '\n')
@@ -64,7 +65,7 @@ module.exports =
       blockLines = blockLines.map (blockLine) ->
         blockLine.replace(/^\s+/, '')
 
-      lines = @doReflow(blockLines.join(' '), wrapColumn - linePrefixTabExpanded.length)
+      lines = @doReflow(blockLines.join(' '), wrapColumn - linePrefixTabExpanded.length, algorithm)
       lines = lines.map (line) ->
         linePrefix + line
 
@@ -72,9 +73,11 @@ module.exports =
 
     leadingVerticalSpace + paragraphs.join('\n\n') + trailingVerticalSpace
 
-  doReflow: (text, wrapColumn) ->
-    # FIXME: Choose implementation based on Atom config setting
-    return @greedyReflow(text, wrapColumn)
+  doReflow: (text, wrapColumn, algorithm) ->
+    if algorithm is "minimumRaggedness"
+      return @minimumRaggednessReflow(text, wrapColumn)
+    else
+      return @greedyReflow(text, wrapColumn)
 
   # Greedy reflow; just put as many words as possible on each line
   greedyReflow: (text, wrapColumn) ->
@@ -164,6 +167,10 @@ module.exports =
 
   getPreferredLineLength: (editor) ->
     atom.config.get('editor.preferredLineLength', scope: editor.getRootScopeDescriptor())
+
+  getAlgorithm: (editor) ->
+    # FIXME: Get an algorithm config setting
+    return "greedy"
 
   wrapSegment: (segment, currentLineLength, wrapColumn) ->
     CharacterPattern.test(segment) and
