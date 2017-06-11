@@ -13,7 +13,6 @@ package offers multiple reflow algorithms, check the settings.
 * Rebase `master` atop `rebase-me-on-upstream-master`
 
 # TODO
-* Make avoid-short-lines the default algorithm
 * README: Add screenshots comparing reflow results with upstream
 * Make a release
 
@@ -21,3 +20,4 @@ package offers multiple reflow algorithms, check the settings.
 * Set up appveyor CI
 * Set up Travis CI
 * Change the name to autoflow2
+* Make avoid-short-lines the default algorithm

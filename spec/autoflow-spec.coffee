@@ -16,6 +16,9 @@ describe "Autoflow package", ->
         atom.config.set('editor.preferredLineLength', 30)
         atom.config.set('editor.tabLength', tabLength)
 
+        # Upstream's unit tests require this
+        atom.config.set('autoflow2.algorithm', 'greedy')
+
         activationPromise = atom.packages.activatePackage('autoflow')
 
         atom.commands.dispatch editorElement, 'autoflow2:reflow-selection'
@@ -193,7 +196,7 @@ describe "Autoflow package", ->
             erat dolor. rutrum nisl fermentum  rhoncus. Duis blandit ligula facilisis
             fermentum
       '''
-      expect(autoflow.reflow(text, wrapColumn: 80)).toEqual res
+      expect(autoflow.reflow(text, wrapColumn: 80, algorithm: "greedy")).toEqual res
 
     it 'respects prefixed text (comments!)', ->
       text = '''
@@ -218,7 +221,7 @@ describe "Autoflow package", ->
           #  erat dolor. rutrum nisl fermentum  rhoncus. Duis blandit ligula facilisis
           #  fermentum
       '''
-      expect(autoflow.reflow(text, wrapColumn: 80)).toEqual res
+      expect(autoflow.reflow(text, wrapColumn: 80, algorithm: "greedy")).toEqual res
 
     it 'respects multiple prefixes (js/c comments)', ->
       text = '''
@@ -298,7 +301,7 @@ describe "Autoflow package", ->
         медленно, как бы в нерешимости, отправился к К-ну мосту.
       '''
 
-      expect(autoflow.reflow(text, wrapColumn: 80)).toEqual res
+      expect(autoflow.reflow(text, wrapColumn: 80, algorithm: "greedy")).toEqual res
 
     it 'handles `yo` character properly', ->
       # Because there're known problems with this character in major regex engines

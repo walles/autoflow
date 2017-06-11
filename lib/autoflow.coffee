@@ -19,7 +19,7 @@ module.exports =
       reflowing](https://en.wikipedia.org/wiki/Line_wrap_and_word_wrap#Minimum_raggedness).
       '''
       type: 'string'
-      default: 'greedy'
+      default: 'minimumRaggedness'
       enum: [
         {value: 'greedy', description: 'Put as many words as possible on each line'}
         {value: 'minimumRaggedness', description: 'Avoid short lines after reflow'}
@@ -65,9 +65,9 @@ module.exports =
     else
       tabLengthInSpaces = ''
 
-    @reflowNonPrefixedLines = @greedyReflow
-    if algorithm is "minimumRaggedness"
-      @reflowNonPrefixedLines = @minimumRaggednessReflow
+    @reflowNonPrefixedLines = @minimumRaggednessReflow
+    if algorithm is "greedy"
+      @reflowNonPrefixedLines = @greedyReflow
 
     for block in paragraphBlocks
 
@@ -178,7 +178,7 @@ module.exports =
     return lines
 
   getAlgorithm: (editor) ->
-    atom.config.get('autoflow.algorithm')
+    atom.config.get('autoflow2.algorithm')
 
   getTabLength: (editor) ->
     atom.config.get('editor.tabLength', scope: editor.getRootScopeDescriptor()) ? 2
