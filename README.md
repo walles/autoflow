@@ -8,12 +8,31 @@ This package uses the config value of `editor.preferredLineLength` when set to d
 Unlike the [bundled autoflow package](https://atom.io/packages/autoflow), this
 package offers multiple reflow algorithms, check the settings.
 
+# Example
+With this package:
+```
+1. Create `FlickrUploaderAndroid/flickrUploader/fabric.properties`
+with one line: "`apiKey=0`" (or follow the [official Crashlytics
+instructions](https://docs.fabric.io/android/fabric/settings/working-in-teams.html#android-projects))
+```
+
+With the bundled-with-Atom reflower:
+```
+1. Create `FlickrUploaderAndroid/flickrUploader/fabric.properties` with one
+line: "`apiKey=0`" (or follow the [official Crashlytics
+instructions](https://docs.fabric.io/android/fabric/settings/working-in-teams.html#android-projects))
+```
+Note how this package avoids short lines for line 1 and 2, while the bundled
+package giving a less symmetric result.
+
+The example is from the <https://github.com/walles/flickr-uploader#building>
+README.
+
 # Rebasing on top of upstream
 * Rebase `rebase-me-on-upstream-master` atop the updated autoflow `master`
 * Rebase `master` atop `rebase-me-on-upstream-master`
 
 # TODO
-* README: Add screenshots comparing reflow results with upstream
 * Make a release
 
 ## DONE
@@ -21,3 +40,4 @@ package offers multiple reflow algorithms, check the settings.
 * Set up Travis CI
 * Change the name to autoflow2
 * Make avoid-short-lines the default algorithm
+* README: Add example comparing reflow results with upstream
