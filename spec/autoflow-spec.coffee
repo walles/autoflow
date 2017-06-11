@@ -19,7 +19,7 @@ describe "Autoflow package", ->
         # Upstream's unit tests require this
         atom.config.set('autoflow2.algorithm', 'greedy')
 
-        activationPromise = atom.packages.activatePackage('autoflow')
+        activationPromise = atom.packages.activatePackage('autoflow2')
 
         atom.commands.dispatch editorElement, 'autoflow2:reflow-selection'
 
