@@ -14,9 +14,10 @@ package offers multiple reflow algorithms, check the settings.
 
 # TODO
 * Make avoid-short-lines the default algorithm
-* Change the name to autoflow2
+* README: Add screenshots comparing reflow results with upstream
 * Make a release
 
 ## DONE
 * Set up appveyor CI
 * Set up Travis CI
+* Change the name to autoflow2
