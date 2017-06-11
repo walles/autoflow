@@ -1,5 +1,5 @@
 '.platform-darwin atom-text-editor':
-  'alt-cmd-q': 'autoflow:reflow-selection'
+  'alt-cmd-q': 'autoflow2:reflow-selection'
 
 '.platform-win32 atom-text-editor, .platform-linux atom-text-editor':
-  'ctrl-shift-q': 'autoflow:reflow-selection'
+  'ctrl-shift-q': 'autoflow2:reflow-selection'

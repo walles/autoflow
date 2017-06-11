@@ -4,7 +4,7 @@
     'submenu': [
       {
         'label': 'Reflow Selection'
-        'command': 'autoflow:reflow-selection'
+        'command': 'autoflow2:reflow-selection'
       }
     ]
   }
