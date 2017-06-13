@@ -19,7 +19,6 @@ README.
 * Rebase `master` atop `rebase-me-on-upstream-master`
 
 # TODO
-* Make a release
 
 ## DONE
 * Set up appveyor CI
@@ -27,3 +26,4 @@ README.
 * Change the name to autoflow2
 * Make avoid-short-lines the default algorithm
 * README: Add example comparing reflow results with upstream
+* Make a release
