@@ -9,21 +9,7 @@ Unlike the [bundled autoflow package](https://atom.io/packages/autoflow), this
 package offers multiple reflow algorithms, check the settings.
 
 # Example
-With this package:
-```
-1. Create `FlickrUploaderAndroid/flickrUploader/fabric.properties`
-with one line: "`apiKey=0`" (or follow the [official Crashlytics
-instructions](https://docs.fabric.io/android/fabric/settings/working-in-teams.html#android-projects))
-```
-
-With the bundled-with-Atom reflower:
-```
-1. Create `FlickrUploaderAndroid/flickrUploader/fabric.properties` with one
-line: "`apiKey=0`" (or follow the [official Crashlytics
-instructions](https://docs.fabric.io/android/fabric/settings/working-in-teams.html#android-projects))
-```
-Note how this package avoids short lines for line 1 and 2, while the bundled
-package giving a less symmetric result.
+![Reflow examples](https://github.com/walles/autoflow/raw/master/resources/reflow-comparison.gif "Reflow examples")
 
 The example is from the <https://github.com/walles/flickr-uploader#building>
 README.
