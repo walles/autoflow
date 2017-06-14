@@ -1,6 +1,6 @@
 {
   "name": "autoflow2",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "main": "./lib/autoflow",
   "description": "Format the current selection to have lines no longer than 80 characters.\n\nThis package handles very long words (like URLs) better than Autoflow.",
   "activationCommands": {
@@ -21,5 +21,12 @@
   },
   "bugs": "https://github.com/walles/autoflow/issues",
   "homepage": "https://atom.io/packages/autoflow2",
-  "keywords": ["reflow", "justify", "fill", "format", "autoflow", "minimum raggedness"]
+  "keywords": [
+    "reflow",
+    "justify",
+    "fill",
+    "format",
+    "autoflow",
+    "minimum raggedness"
+  ]
 }
