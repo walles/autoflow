@@ -22,11 +22,10 @@
   "bugs": "https://github.com/walles/autoflow/issues",
   "homepage": "https://atom.io/packages/autoflow2",
   "keywords": [
+    "autoflow",
     "reflow",
-    "justify",
     "fill",
     "format",
-    "autoflow",
-    "minimum raggedness"
+    "paragraph"
   ]
 }
